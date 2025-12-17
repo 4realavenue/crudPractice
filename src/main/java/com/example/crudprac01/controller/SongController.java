@@ -3,16 +3,14 @@ package com.example.crudprac01.controller;
 import com.example.crudprac01.dto.request.CreateSongRequestDto;
 import com.example.crudprac01.dto.response.ApiResponse;
 import com.example.crudprac01.dto.response.CreateSongResponseDto;
+import com.example.crudprac01.dto.response.GetSongDetailResponseDto;
 import com.example.crudprac01.service.SongService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/songs")
@@ -43,7 +41,26 @@ public class SongController {
         ResponseEntity<ApiResponse<CreateSongResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
 
         return response;
-
     }
 
+    /**
+     * 단건 조회
+     * @param songId
+     * @return
+     */
+    @GetMapping("/{songId}")
+    public ResponseEntity<ApiResponse<GetSongDetailResponseDto>> getSongDetailApi (@PathVariable ("songId") Long songId) {
+        // 1. 컨트롤러 확인
+        log.info("컨트롤러 - 단건 조회");
+
+
+        GetSongDetailResponseDto responseDto = songService.getSongDetail(songId);
+
+        ApiResponse<GetSongDetailResponseDto> apiResponse = new ApiResponse<>("success", 200, responseDto);
+
+        ResponseEntity<ApiResponse<GetSongDetailResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        return response;
+
+    }
 }

@@ -3,6 +3,7 @@ package com.example.crudprac01.service;
 import com.example.crudprac01.controller.SongController;
 import com.example.crudprac01.dto.request.CreateSongRequestDto;
 import com.example.crudprac01.dto.response.CreateSongResponseDto;
+import com.example.crudprac01.dto.response.GetSongDetailResponseDto;
 import com.example.crudprac01.entity.Song;
 import com.example.crudprac01.repository.SongRepository;
 import org.slf4j.Logger;
@@ -49,6 +50,30 @@ public class SongService {
         );
 
         // 8. service 레이어에서 수행한 메서드 반환
+        return responseDto;
+    }
+
+    /**
+     * 단건 조회
+     * @param songId
+     * @return
+     */
+    @Transactional
+    public GetSongDetailResponseDto getSongDetail (Long songId) {
+        // 2. 서비스 확인
+        log.info("서비스 - 단건 조회");
+
+        // 3. id로 원하는 조회 하고 싶은 노래 찾아와서 findSong 변수에 넣어주기
+        // + findById로 optional 타입이 되었으니 .orElseThrow로 null의 경우 예외 시키기
+        Song findSong = songRepository.findById(songId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 노래입니다."));
+
+        GetSongDetailResponseDto responseDto = new GetSongDetailResponseDto(
+                findSong.getId(),
+                findSong.getTitle(),
+                findSong.getSinger()
+        );
+
         return responseDto;
     }
 }
