@@ -2,6 +2,7 @@ package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateUserRequest;
 import com.example.crudprac01.dto.response.CreateUserResponse;
+import com.example.crudprac01.dto.response.GetOneUserResponse;
 import com.example.crudprac01.entity.User;
 import com.example.crudprac01.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,20 @@ public class UserService {
                 saveUser.getEmail(),
                 saveUser.getPassword(),
                 saveUser.getCreatedAt()
+        );
+
+        return responseDto;
+    }
+
+    @Transactional
+    public GetOneUserResponse getOneUser(Long userId) {
+        User findUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
+
+        GetOneUserResponse responseDto = new GetOneUserResponse(
+                findUser.getId(),
+                findUser.getName(),
+                findUser.getEmail()
         );
 
         return responseDto;

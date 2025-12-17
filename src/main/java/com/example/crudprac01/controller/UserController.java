@@ -3,6 +3,7 @@ package com.example.crudprac01.controller;
 import com.example.crudprac01.dto.ApiResponse;
 import com.example.crudprac01.dto.request.CreateUserRequest;
 import com.example.crudprac01.dto.response.CreateUserResponse;
+import com.example.crudprac01.dto.response.GetOneUserResponse;
 import com.example.crudprac01.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,18 @@ public class UserController {
         ApiResponse<CreateUserResponse> apiResponse = new ApiResponse("success", 201, responseDto);
 
         ResponseEntity<ApiResponse<CreateUserResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+
+        return response;
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse<GetOneUserResponse>> getOneUserApi(@PathVariable ("userId") Long userId) {
+
+        GetOneUserResponse responseDto = userService.getOneUser(userId);
+
+        ApiResponse<GetOneUserResponse> apiResponse = new ApiResponse<>("success", 200, responseDto);
+
+        ResponseEntity<ApiResponse<GetOneUserResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }
