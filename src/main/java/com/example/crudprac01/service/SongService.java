@@ -2,9 +2,11 @@ package com.example.crudprac01.service;
 
 import com.example.crudprac01.controller.SongController;
 import com.example.crudprac01.dto.request.CreateSongRequestDto;
+import com.example.crudprac01.dto.request.UpdateSongRequestDto;
 import com.example.crudprac01.dto.response.CreateSongResponseDto;
 import com.example.crudprac01.dto.response.GetSongAllResponseDto;
 import com.example.crudprac01.dto.response.GetSongDetailResponseDto;
+import com.example.crudprac01.dto.response.UpdateSongResponseDto;
 import com.example.crudprac01.entity.Song;
 import com.example.crudprac01.repository.SongRepository;
 import org.slf4j.Logger;
@@ -101,5 +103,25 @@ public class SongService {
         }
         // 6. songDto들이 반복 돼서 담긴 songDtos 반환
         return songDtos;
+    }
+
+    @Transactional
+    public UpdateSongResponseDto updateSong(Long songId, UpdateSongRequestDto request) {
+        // 1. Id로 repository에서 Song 객체 찾아오기
+        // + orElseThrow로 null이 들어왔을 때 예외
+        Song findSong = songRepository.findById(songId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 노래입니다."));
+
+        // 3. update 메서드로 findSong의 title과 singer를 request로 받아온 title과 singer로 변경
+        findSong.update(request.getTitle(), request.getSinger());
+
+        // 4. 찾아오고, 업데이트 해줬던 값을 responseDto에 다시 담아줌
+        UpdateSongResponseDto responseDto = new UpdateSongResponseDto(
+                findSong.getId(),
+                findSong.getTitle(),
+                findSong.getSinger()
+        );
+
+        return responseDto;
     }
 }

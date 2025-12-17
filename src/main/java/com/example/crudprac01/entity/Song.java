@@ -36,4 +36,10 @@ public class Song {
     public String getSinger() {
         return singer;
     }
+
+    // 2. update 메서드 생성
+    public void update(String title, String singer) {
+        this.title = title;
+        this.singer = singer;
+    }
 }

@@ -1,10 +1,8 @@
 package com.example.crudprac01.controller;
 
 import com.example.crudprac01.dto.request.CreateSongRequestDto;
-import com.example.crudprac01.dto.response.ApiResponse;
-import com.example.crudprac01.dto.response.CreateSongResponseDto;
-import com.example.crudprac01.dto.response.GetSongAllResponseDto;
-import com.example.crudprac01.dto.response.GetSongDetailResponseDto;
+import com.example.crudprac01.dto.request.UpdateSongRequestDto;
+import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.service.SongService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +77,20 @@ public class SongController {
         ApiResponse<List<GetSongAllResponseDto>> apiResponse = new ApiResponse<>("success", 200, responseDtos);
 
         ResponseEntity<ApiResponse<List<GetSongAllResponseDto>>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        return response;
+    }
+
+    @PutMapping("/{songId}")
+    public ResponseEntity<ApiResponse<UpdateSongResponseDto>> updateSong(
+            @PathVariable ("songId") Long songId,
+            @RequestBody UpdateSongRequestDto request
+            ) {
+        UpdateSongResponseDto responseDto = songService.updateSong(songId, request);
+
+        ApiResponse<UpdateSongResponseDto> apiResponse = new ApiResponse<>("success", 200, responseDto);
+
+        ResponseEntity<ApiResponse<UpdateSongResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }
