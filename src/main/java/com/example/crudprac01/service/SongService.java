@@ -124,4 +124,12 @@ public class SongService {
 
         return responseDto;
     }
+
+    @Transactional
+    public void deleteSong(Long songId) {
+        Song findSong = songRepository.findById(songId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 노래입니다."));
+
+        songRepository.delete(findSong);
+    }
 }

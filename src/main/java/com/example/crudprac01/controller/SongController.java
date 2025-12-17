@@ -94,4 +94,9 @@ public class SongController {
 
         return response;
     }
+
+    @DeleteMapping("/{songId}")
+    public void deleteSongApi(@PathVariable ("songId") Long songId) {
+        songService.deleteSong(songId);
+    }
 }
