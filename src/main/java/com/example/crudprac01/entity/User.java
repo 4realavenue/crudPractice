@@ -22,7 +22,7 @@ public class User {
     @Column (name = "password", length = 100, unique = true)
     private String password;
 
-    @Column (name = "createdAt")
+    @Column (name = "created_at")
     private LocalDateTime createdAt;
 
     @Column (name = "modifiedAt")
@@ -33,12 +33,11 @@ public class User {
     // Spring이 사용하는 생성자 입니다.
     protected User() {}
 
-    public User(String name, String email, String password, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
+        this.createdAt = LocalDateTime.now();
     }
 
     public long getId() {
