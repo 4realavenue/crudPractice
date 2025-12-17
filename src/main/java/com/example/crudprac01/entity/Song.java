@@ -8,6 +8,7 @@ public class Song {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column (name = "id")
     private Long id;
 
     @Column (name = "title", length = 100)
@@ -17,11 +18,7 @@ public class Song {
     private String singer;
 
     // Spring이 사용하는 생성자입니다
-    protected Song(Long id, String title, String singer) {
-        this.id = id;
-        this.title = title;
-        this.singer = singer;
-    }
+    protected Song() {}
 
     public Song(String title, String singer) {
         this.title = title;
