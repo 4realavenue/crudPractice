@@ -3,6 +3,7 @@ package com.example.crudprac01.controller;
 import com.example.crudprac01.dto.request.CreateSongRequestDto;
 import com.example.crudprac01.dto.response.ApiResponse;
 import com.example.crudprac01.dto.response.CreateSongResponseDto;
+import com.example.crudprac01.dto.response.GetSongAllResponseDto;
 import com.example.crudprac01.dto.response.GetSongDetailResponseDto;
 import com.example.crudprac01.service.SongService;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/songs")
@@ -45,11 +48,12 @@ public class SongController {
 
     /**
      * 단건 조회
+     *
      * @param songId
      * @return
      */
     @GetMapping("/{songId}")
-    public ResponseEntity<ApiResponse<GetSongDetailResponseDto>> getSongDetailApi (@PathVariable ("songId") Long songId) {
+    public ResponseEntity<ApiResponse<GetSongDetailResponseDto>> getSongDetailApi(@PathVariable("songId") Long songId) {
         // 1. 컨트롤러 확인
         log.info("컨트롤러 - 단건 조회");
 
@@ -62,5 +66,14 @@ public class SongController {
 
         return response;
 
+    }
+
+    @GetMapping
+    public List<GetSongAllResponseDto> getSongAllApi() {
+        // 1. 컨트롤러 확인
+        log.info("컨트롤러 - 전체 조회");
+        List<GetSongAllResponseDto> response = songService.getSongAll();
+
+        return response;
     }
 }

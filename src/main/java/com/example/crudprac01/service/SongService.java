@@ -3,6 +3,7 @@ package com.example.crudprac01.service;
 import com.example.crudprac01.controller.SongController;
 import com.example.crudprac01.dto.request.CreateSongRequestDto;
 import com.example.crudprac01.dto.response.CreateSongResponseDto;
+import com.example.crudprac01.dto.response.GetSongAllResponseDto;
 import com.example.crudprac01.dto.response.GetSongDetailResponseDto;
 import com.example.crudprac01.entity.Song;
 import com.example.crudprac01.repository.SongRepository;
@@ -10,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SongService {
@@ -59,7 +63,7 @@ public class SongService {
      * @return
      */
     @Transactional
-    public GetSongDetailResponseDto getSongDetail (Long songId) {
+    public GetSongDetailResponseDto getSongDetail(Long songId) {
         // 2. 서비스 확인
         log.info("서비스 - 단건 조회");
 
@@ -75,5 +79,24 @@ public class SongService {
         );
 
         return responseDto;
+    }
+
+    @Transactional
+    public List<GetSongAllResponseDto> getSongAll() {
+        // 2. 서비스 확인
+        log.info("서비스 - 전체 조회");
+
+        //
+        List<Song> songList = songRepository.findAll();
+
+        List<GetSongAllResponseDto> songDtos = new ArrayList<>();
+
+        for (Song song : songList) {
+            GetSongAllResponseDto songDto = new GetSongAllResponseDto(song.getId(), song.getTitle(), song.getSinger());
+
+            songDtos.add(songDto);
+        }
+
+        return songDtos;
     }
 }
