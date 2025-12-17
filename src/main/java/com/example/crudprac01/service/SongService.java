@@ -86,17 +86,20 @@ public class SongService {
         // 2. 서비스 확인
         log.info("서비스 - 전체 조회");
 
-        //
+        // 3. repository를 통해 DB에 저장 된 모든 Song 객체 songList에 담아주기
         List<Song> songList = songRepository.findAll();
 
+        // 4. 전체 조회 전용 ResponseDto 만들어주고 List로 감싸서 songDtos 라는 변수명 달아줌
         List<GetSongAllResponseDto> songDtos = new ArrayList<>();
 
+        // 5. for문 사용해서 songList의 Song 객체 꺼내서 song 변수에 담아줌
         for (Song song : songList) {
+            // + 전체 조회 전용 ResponseDto에 song 변수에 담긴 데이터 다시 담아줌 (공개 돼선 안될 데이터 보호 + 데이터에 직접 접근 x)
             GetSongAllResponseDto songDto = new GetSongAllResponseDto(song.getId(), song.getTitle(), song.getSinger());
-
+            // songDtos List에 songDto 담아줌
             songDtos.add(songDto);
         }
-
+        // 6. songDto들이 반복 돼서 담긴 songDtos 반환
         return songDtos;
     }
 }

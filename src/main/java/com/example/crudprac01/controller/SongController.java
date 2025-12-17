@@ -69,10 +69,16 @@ public class SongController {
     }
 
     @GetMapping
-    public List<GetSongAllResponseDto> getSongAllApi() {
+    public ResponseEntity<ApiResponse<List<GetSongAllResponseDto>>> getSongAllApi() {
         // 1. 컨트롤러 확인
         log.info("컨트롤러 - 전체 조회");
-        List<GetSongAllResponseDto> response = songService.getSongAll();
+
+        // 7. songService 에서 getSongAll 메서드를 실행시키고 반환된 값을 response에 담아줌
+        List<GetSongAllResponseDto> responseDtos = songService.getSongAll();
+
+        ApiResponse<List<GetSongAllResponseDto>> apiResponse = new ApiResponse<>("success", 200, responseDtos);
+
+        ResponseEntity<ApiResponse<List<GetSongAllResponseDto>>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }
