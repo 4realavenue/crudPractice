@@ -64,7 +64,7 @@ public class User {
         return modifiedAt;
     }
 
-    public Boolean getDeleted() {
+    public Boolean getIsDeleted() {
         return isDeleted;
     }
 

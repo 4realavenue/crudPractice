@@ -112,7 +112,7 @@ public class UserService {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다"));
 
-        if (findUser.getDeleted() == false) {
+        if (findUser.getIsDeleted() == false) {
             findUser.delete(true);
         }
     }

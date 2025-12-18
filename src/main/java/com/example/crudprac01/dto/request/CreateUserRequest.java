@@ -2,6 +2,7 @@ package com.example.crudprac01.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 
