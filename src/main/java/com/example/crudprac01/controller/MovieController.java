@@ -70,4 +70,13 @@ public class MovieController {
         return response;
     }
 
+
+    @DeleteMapping("/{movieId}")
+    public ApiResponse deleteMovieApi(@PathVariable ("movieId") long movieId) {
+        movieService.deleteMovie(movieId);
+
+        ApiResponse apiResponse = new ApiResponse<>("success", 200, null);
+
+        return apiResponse;
+    }
 }

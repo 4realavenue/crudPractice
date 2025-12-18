@@ -26,6 +26,8 @@ public class Movie {
 
     private LocalDate releaseDate;
 
+    private Boolean isDeleted = false;
+
     // 스프링이 사용하는 생성자 입니다.
     protected Movie() {
     }
@@ -52,9 +54,18 @@ public class Movie {
         return releaseDate;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
     public void update(String title, String director, LocalDate releaseDate) {
         this.title = title;
         this.director = director;
         this.releaseDate = releaseDate;
     }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
+
 }

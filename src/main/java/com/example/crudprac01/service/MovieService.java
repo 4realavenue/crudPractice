@@ -49,6 +49,10 @@ public class MovieService {
         Movie findMovie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않는 영화 입니다."));
 
+        if (findMovie.getDeleted() == true) {
+            throw new IllegalArgumentException("등록이 제거 된 영화입니다.");
+        }
+
         GetOneMovieResponse responseDto = new GetOneMovieResponse(
                 findMovie.getTitle(),
                 findMovie.getDirector(),
@@ -60,7 +64,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<GetAllMovieResponse> getAllMovie() {
-        List<Movie> movieList = movieRepository.findAll();
+        List<Movie> movieList = movieRepository.findByIsDeletedIsFalse();
 
         List<GetAllMovieResponse> responseDtoList = new ArrayList<>();
 
@@ -82,6 +86,10 @@ public class MovieService {
         Movie findMovie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 영화 입니다."));
 
+        if (findMovie.getDeleted() == true) {
+            throw new IllegalArgumentException("등록이 제거 된 영화입니다.");
+        }
+
         findMovie.update(
                 request.getTitle(),
                 request.getDirector(),
@@ -96,5 +104,17 @@ public class MovieService {
 
         return responseDto;
 
+    }
+
+    @Transactional
+    public void deleteMovie(long movieId) {
+         Movie findMovie = movieRepository.findById(movieId)
+                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 영화 입니다."));
+
+         if (findMovie.getDeleted() == true) {
+             throw new IllegalArgumentException("이미 등록이 제거 된 영화입니다.");
+         }
+
+         findMovie.delete();
     }
 }
