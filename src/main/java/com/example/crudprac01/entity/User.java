@@ -67,4 +67,8 @@ public class User {
     public Boolean getDeleted() {
         return isDeleted;
     }
+
+    public void update(String name) {
+        this.name = name;
+    }
 }

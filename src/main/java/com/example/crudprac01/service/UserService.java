@@ -1,9 +1,11 @@
 package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateUserRequest;
+import com.example.crudprac01.dto.request.UpdateUserRequest;
 import com.example.crudprac01.dto.response.CreateUserResponse;
 import com.example.crudprac01.dto.response.GetAllUserResponse;
 import com.example.crudprac01.dto.response.GetOneUserResponse;
+import com.example.crudprac01.dto.response.UpdateUserResponse;
 import com.example.crudprac01.entity.User;
 import com.example.crudprac01.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -48,8 +50,8 @@ public class UserService {
     /**
      * 유저 단건 조회
      */
-    @Transactional
-    public GetOneUserResponse getOneUser(Long userId) {
+    @Transactional(readOnly = true)
+    public GetOneUserResponse getOneUser(long userId) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다."));
 
@@ -65,7 +67,7 @@ public class UserService {
     /**
      * 유저 전체 조회
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GetAllUserResponse> getAllUser() {
         List<User> userList = userRepository.findAll();
 
@@ -80,5 +82,25 @@ public class UserService {
         }
 
         return userDtoList;
+    }
+
+    /**
+     * 유저 정보(이름) 일부 수정
+     */
+    @Transactional
+    public UpdateUserResponse updateUser(long userId, UpdateUserRequest request) {
+        User findUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
+
+        findUser.update(
+                request.getName()
+        );
+
+        UpdateUserResponse responseDto = new UpdateUserResponse(
+                findUser.getName(),
+                findUser.getEmail()
+        );
+
+        return responseDto;
     }
 }
