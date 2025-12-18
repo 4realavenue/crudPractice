@@ -1,10 +1,8 @@
 package com.example.crudprac01.controller;
 
 import com.example.crudprac01.dto.request.CreateMovieRequest;
-import com.example.crudprac01.dto.response.ApiResponse;
-import com.example.crudprac01.dto.response.CreateMovieResponse;
-import com.example.crudprac01.dto.response.GetAllMovieResponse;
-import com.example.crudprac01.dto.response.GetOneMovieResponse;
+import com.example.crudprac01.dto.request.UpdateMovieRequest;
+import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +52,20 @@ public class MovieController {
         ApiResponse<List<GetAllMovieResponse>> apiResponse = new ApiResponse<>("success", 200, responseDtoList);
 
         ResponseEntity<ApiResponse<List<GetAllMovieResponse>>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        return response;
+    }
+
+    @PutMapping("/{movieId}")
+    public ResponseEntity<ApiResponse<UpdateMovieResponse>> updateMovieApi(
+            @PathVariable("movieId") long movieId,
+            @RequestBody UpdateMovieRequest request
+    ) {
+        UpdateMovieResponse responseDto = movieService.updateMovie(movieId, request);
+
+        ApiResponse<UpdateMovieResponse> apiResponse = new ApiResponse<>("success", 200, responseDto);
+
+        ResponseEntity<ApiResponse<UpdateMovieResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }

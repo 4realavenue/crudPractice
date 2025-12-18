@@ -1,9 +1,11 @@
 package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateMovieRequest;
+import com.example.crudprac01.dto.request.UpdateMovieRequest;
 import com.example.crudprac01.dto.response.CreateMovieResponse;
 import com.example.crudprac01.dto.response.GetAllMovieResponse;
 import com.example.crudprac01.dto.response.GetOneMovieResponse;
+import com.example.crudprac01.dto.response.UpdateMovieResponse;
 import com.example.crudprac01.entity.Movie;
 import com.example.crudprac01.repository.MovieRepository;
 import org.springframework.stereotype.Service;
@@ -43,7 +45,7 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public GetOneMovieResponse getOneMovie(Long movieId) {
+    public GetOneMovieResponse getOneMovie(long movieId) {
         Movie findMovie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않는 영화 입니다."));
 
@@ -73,5 +75,26 @@ public class MovieService {
         }
 
         return responseDtoList;
+    }
+
+    @Transactional
+    public UpdateMovieResponse updateMovie(long movieId, UpdateMovieRequest request) {
+        Movie findMovie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 영화 입니다."));
+
+        findMovie.update(
+                request.getTitle(),
+                request.getDirector(),
+                request.getReleaseDate()
+        );
+
+        UpdateMovieResponse responseDto = new UpdateMovieResponse(
+                findMovie.getTitle(),
+                findMovie.getDirector(),
+                findMovie.getReleaseDate()
+        );
+
+        return responseDto;
+
     }
 }
