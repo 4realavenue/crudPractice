@@ -103,4 +103,17 @@ public class UserService {
 
         return responseDto;
     }
+
+    /**
+     * 유저 삭제 (softDelete)
+     */
+    @Transactional
+    public void deleteUser(Long userId) {
+        User findUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다"));
+
+        if (findUser.getDeleted() == false) {
+            findUser.delete(true);
+        }
+    }
 }

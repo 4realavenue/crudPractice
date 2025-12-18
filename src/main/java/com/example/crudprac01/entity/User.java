@@ -71,4 +71,9 @@ public class User {
     public void update(String name) {
         this.name = name;
     }
+
+    public Boolean delete(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+        return this.isDeleted;
+    }
 }
