@@ -1,4 +1,4 @@
 package com.example.crudprac01.service;
 
-public class a {
+public class DrinkService {
 }
