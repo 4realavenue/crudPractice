@@ -68,8 +68,9 @@ public class User {
         return isDeleted;
     }
 
-    public void update(String name) {
+    public void update(String name, LocalDateTime modifiedAt) {
         this.name = name;
+        this.modifiedAt = modifiedAt;
     }
 
     public Boolean delete(Boolean isDeleted) {

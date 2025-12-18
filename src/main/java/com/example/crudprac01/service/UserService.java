@@ -11,6 +11,7 @@ import com.example.crudprac01.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,12 +94,14 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
 
         findUser.update(
-                request.getName()
+                request.getName(),
+                LocalDateTime.now()
         );
 
         UpdateUserResponse responseDto = new UpdateUserResponse(
                 findUser.getName(),
-                findUser.getEmail()
+                findUser.getEmail(),
+                findUser.getModifiedAt()
         );
 
         return responseDto;
