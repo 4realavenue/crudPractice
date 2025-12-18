@@ -2,6 +2,7 @@ package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateMovieRequest;
 import com.example.crudprac01.dto.response.CreateMovieResponse;
+import com.example.crudprac01.dto.response.GetOneMovieResponse;
 import com.example.crudprac01.entity.Movie;
 import com.example.crudprac01.repository.MovieRepository;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,20 @@ public class MovieService {
                 movie.getTitle(),
                 movie.getDirector(),
                 movie.getReleaseDate()
+        );
+
+        return responseDto;
+    }
+
+    @Transactional(readOnly = true)
+    public GetOneMovieResponse getOneMovie(Long movieId) {
+        Movie findMovie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않는 영화 입니다."));
+
+        GetOneMovieResponse responseDto = new GetOneMovieResponse(
+                findMovie.getTitle(),
+                findMovie.getDirector(),
+                findMovie.getReleaseDate()
         );
 
         return responseDto;
