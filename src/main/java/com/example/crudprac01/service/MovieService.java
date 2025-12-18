@@ -2,6 +2,7 @@ package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateMovieRequest;
 import com.example.crudprac01.dto.response.CreateMovieResponse;
+import com.example.crudprac01.dto.response.GetAllMovieResponse;
 import com.example.crudprac01.dto.response.GetOneMovieResponse;
 import com.example.crudprac01.entity.Movie;
 import com.example.crudprac01.repository.MovieRepository;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieService {
@@ -51,5 +54,24 @@ public class MovieService {
         );
 
         return responseDto;
+    }
+
+    @Transactional(readOnly = true)
+    public List<GetAllMovieResponse> getAllMovie() {
+        List<Movie> movieList = movieRepository.findAll();
+
+        List<GetAllMovieResponse> responseDtoList = new ArrayList<>();
+
+        for (Movie movie : movieList) {
+            GetAllMovieResponse responseDto = new GetAllMovieResponse(
+                    movie.getTitle(),
+                    movie.getDirector(),
+                    movie.getReleaseDate()
+            );
+
+            responseDtoList.add(responseDto);
+        }
+
+        return responseDtoList;
     }
 }
