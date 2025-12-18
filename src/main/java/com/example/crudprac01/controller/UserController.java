@@ -3,11 +3,14 @@ package com.example.crudprac01.controller;
 import com.example.crudprac01.dto.ApiResponse;
 import com.example.crudprac01.dto.request.CreateUserRequest;
 import com.example.crudprac01.dto.response.CreateUserResponse;
+import com.example.crudprac01.dto.response.GetAllUserResponse;
 import com.example.crudprac01.dto.response.GetOneUserResponse;
 import com.example.crudprac01.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping ("/api/users")
@@ -32,6 +35,7 @@ public class UserController {
         return response;
     }
 
+    // 유저 단건 조회
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<GetOneUserResponse>> getOneUserApi(@PathVariable ("userId") Long userId) {
 
@@ -43,4 +47,17 @@ public class UserController {
 
         return response;
     }
+
+    // 유저 전체 조회
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<GetAllUserResponse>>> getAllUserApi() {
+        List<GetAllUserResponse> responseDto = userService.getAllUser();
+
+        ApiResponse<List<GetAllUserResponse>> apiResponse = new ApiResponse<>("success", 200, responseDto);
+
+        ResponseEntity<ApiResponse<List<GetAllUserResponse>>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        return response;
+    }
+
 }

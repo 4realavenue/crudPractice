@@ -1,18 +1,12 @@
 package com.example.crudprac01.dto.response;
 
-public class GetOneUserResponse {
-    private long id;
+public class GetAllUserResponse {
     private String name;
     private String email;
 
-    public GetOneUserResponse(long id, String name, String email) {
-        this.id = id;
+    public GetAllUserResponse(String name, String email) {
         this.name = name;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
