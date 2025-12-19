@@ -1,27 +1,49 @@
 package com.example.crudprac01.dto.response;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class GetAllMovieResponse {
-    private String title;
-    private String director;
-    private LocalDate releaseDate;
+    private Integer count;
+    private List<GetMovieListResponse> movieList;
 
-    public GetAllMovieResponse(String title, String director, LocalDate releaseDate) {
-        this.title = title;
-        this.director = director;
-        this.releaseDate = releaseDate;
+    public GetAllMovieResponse(Integer count, List<GetMovieListResponse> movieList) {
+        this.count = count;
+        this.movieList = movieList;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getCount() {
+        return count;
     }
 
-    public String getDirector() {
-        return director;
+    public List<GetMovieListResponse> getMovieList() {
+        return movieList;
     }
 
-    public LocalDate getReleaseDate() {
-        return releaseDate;
+    // movie 리스트
+    public static class GetMovieListResponse {
+        private String title;
+        private String director;
+        private LocalDate releaseDate;
+
+        public GetMovieListResponse(String title, String director, LocalDate releaseDate) {
+            this.title = title;
+            this.director = director;
+            this.releaseDate = releaseDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDirector() {
+            return director;
+        }
+
+        public LocalDate getReleaseDate() {
+            return releaseDate;
+        }
     }
 }
+
+

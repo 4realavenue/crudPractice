@@ -46,12 +46,12 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<GetAllMovieResponse>>> getAllMovieApi() {
-        List<GetAllMovieResponse> responseDtoList = movieService.getAllMovie();
+    public ResponseEntity<ApiResponse<GetAllMovieResponse>> getAllMovieApi() {
+        GetAllMovieResponse responseDto = movieService.getAllMovie();
 
-        ApiResponse<List<GetAllMovieResponse>> apiResponse = new ApiResponse<>("success", 200, responseDtoList);
+        ApiResponse<GetAllMovieResponse> apiResponse = new ApiResponse<>("success", 200, responseDto);
 
-        ResponseEntity<ApiResponse<List<GetAllMovieResponse>>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        ResponseEntity<ApiResponse<GetAllMovieResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }
@@ -63,20 +63,21 @@ public class MovieController {
     ) {
         UpdateMovieResponse responseDto = movieService.updateMovie(movieId, request);
 
-        ApiResponse<UpdateMovieResponse> apiResponse = new ApiResponse<>("success", 200, responseDto);
+        ApiResponse<UpdateMovieResponse> apiResponse = new ApiResponse<>("updated", 200, responseDto);
 
         ResponseEntity<ApiResponse<UpdateMovieResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }
 
-
     @DeleteMapping("/{movieId}")
-    public ApiResponse deleteMovieApi(@PathVariable ("movieId") long movieId) {
-        movieService.deleteMovie(movieId);
+    public ResponseEntity<ApiResponse<DeleteMovieResponse>> deleteMovieApi(@PathVariable ("movieId") long movieId) {
+        DeleteMovieResponse responseDto = movieService.deleteMovie(movieId);
 
-        ApiResponse apiResponse = new ApiResponse<>("success", 200, null);
+        ApiResponse<DeleteMovieResponse> apiResponse = new ApiResponse<>("deleted", 200, responseDto);
 
-        return apiResponse;
+        ResponseEntity<ApiResponse<DeleteMovieResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        return response;
     }
 }

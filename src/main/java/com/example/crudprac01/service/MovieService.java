@@ -2,10 +2,7 @@ package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateMovieRequest;
 import com.example.crudprac01.dto.request.UpdateMovieRequest;
-import com.example.crudprac01.dto.response.CreateMovieResponse;
-import com.example.crudprac01.dto.response.GetAllMovieResponse;
-import com.example.crudprac01.dto.response.GetOneMovieResponse;
-import com.example.crudprac01.dto.response.UpdateMovieResponse;
+import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.entity.Movie;
 import com.example.crudprac01.repository.MovieRepository;
 import org.springframework.stereotype.Service;
@@ -63,22 +60,28 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<GetAllMovieResponse> getAllMovie() {
+    public GetAllMovieResponse getAllMovie() {
+        // 삭제되지 않은 영화 찾아와서 movieList에 넣어줌
         List<Movie> movieList = movieRepository.findByIsDeletedIsFalse();
 
-        List<GetAllMovieResponse> responseDtoList = new ArrayList<>();
+        // movieList의 크기를 count라는 변수에 넣어줌 (몇 개인지)
+        Integer count = movieList.size();
+
+        List<GetAllMovieResponse.GetMovieListResponse> responseListDto = new ArrayList<>();
 
         for (Movie movie : movieList) {
-            GetAllMovieResponse responseDto = new GetAllMovieResponse(
+            GetAllMovieResponse.GetMovieListResponse responseDto = new GetAllMovieResponse.GetMovieListResponse(
                     movie.getTitle(),
                     movie.getDirector(),
                     movie.getReleaseDate()
             );
 
-            responseDtoList.add(responseDto);
+            responseListDto.add(responseDto);
         }
 
-        return responseDtoList;
+        GetAllMovieResponse response = new GetAllMovieResponse(count, responseListDto);
+
+        return response;
     }
 
     @Transactional
@@ -107,7 +110,7 @@ public class MovieService {
     }
 
     @Transactional
-    public void deleteMovie(long movieId) {
+    public DeleteMovieResponse deleteMovie(long movieId) {
          Movie findMovie = movieRepository.findById(movieId)
                  .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 영화 입니다."));
 
@@ -116,5 +119,9 @@ public class MovieService {
          }
 
          findMovie.delete();
+
+        DeleteMovieResponse response = new DeleteMovieResponse(findMovie.getId());
+
+        return response;
     }
 }
