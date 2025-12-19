@@ -13,20 +13,20 @@ public class Drink {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
 
     @Column(name = "releaseDate")
     private LocalDate releaseDate;
 
     @Column(name = "isDeleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 
     // 스프링이 사용하는 기본 생성자 입니다. 건들지 마쇼. 이건 경고요.
@@ -39,7 +39,6 @@ public class Drink {
         this.price = price;
         this.releaseDate = releaseDate;
     }
-
 
     public long getId() {
         return id;
@@ -61,7 +60,16 @@ public class Drink {
         return releaseDate;
     }
 
-    public Boolean getDeleted() {
+    public Boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    public void update(String name, Integer price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 }
