@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 // 도메인 + 행동 + 응답명시 + DTO명시
-public class GameGetAllResponseDto {
+public class GameGetAllResponseDto<T> {
     private Integer count;
     private List<GameGetListResponseDto> gameList;
 
