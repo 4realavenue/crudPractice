@@ -3,6 +3,7 @@ package com.example.crudprac01.dto.response;
 import java.time.LocalDate;
 import java.util.List;
 
+// 도메인 + 행동 + 응답명시 + DTO명시
 public class GameGetAllResponseDto {
     private Integer count;
     private List<GameGetListResponseDto> gameList;
@@ -12,6 +13,7 @@ public class GameGetAllResponseDto {
         this.gameList = gameList;
     }
 
+    // Spring이 사용하는 getter입니다.
     public Integer getCount() {
         return count;
     }
@@ -21,6 +23,7 @@ public class GameGetAllResponseDto {
     }
 
     // -- 유지 보수를 위한 내부 클래스 설계 입니다. --
+    //    도메인 + 행동 + 응답명시 + DTO명시
     public static class GameGetListResponseDto {
 
         private Long id;
@@ -35,6 +38,7 @@ public class GameGetAllResponseDto {
             this.releaseDate = releaseDate;
         }
 
+        // Spring이 사용하는 getter입니다.
         public Long getId() {
             return id;
         }

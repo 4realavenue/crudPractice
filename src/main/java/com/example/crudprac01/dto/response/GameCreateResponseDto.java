@@ -2,6 +2,7 @@ package com.example.crudprac01.dto.response;
 
 import java.time.LocalDate;
 
+// 도메인 + 행동 + 응답명시 + DTO명시
 public class GameCreateResponseDto {
 
     private Long id;
@@ -16,6 +17,7 @@ public class GameCreateResponseDto {
         this.releaseDate = releaseDate;
     }
 
+    // Spring이 사용하는 getter입니다.
     public Long getId() {
         return id;
     }
