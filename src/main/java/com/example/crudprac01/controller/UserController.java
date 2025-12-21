@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping ("/api/users")
 public class UserController {
@@ -76,13 +74,13 @@ public class UserController {
 
     // 유저 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse<DeleteUserResponseDto>> deleteUser(@PathVariable ("userId") Long userId) {
+    public ResponseEntity<ApiResponse<DeleteUserResponse>> deleteUser(@PathVariable ("userId") Long userId) {
 
-        DeleteUserResponseDto responseDto = userService.deleteUser(userId);
+        DeleteUserResponse responseDto = userService.deleteUser(userId);
 
-        ApiResponse<DeleteUserResponseDto> apiResponse = new ApiResponse<>("deleted", 200, responseDto);
+        ApiResponse<DeleteUserResponse> apiResponse = new ApiResponse<>("deleted", 200, responseDto);
 
-        ResponseEntity<ApiResponse<DeleteUserResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        ResponseEntity<ApiResponse<DeleteUserResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }

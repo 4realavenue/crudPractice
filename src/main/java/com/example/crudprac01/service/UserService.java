@@ -114,7 +114,7 @@ public class UserService {
      * 유저 삭제 (softDelete)
      */
     @Transactional
-    public DeleteUserResponseDto deleteUser(Long userId) {
+    public DeleteUserResponse deleteUser(Long userId) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다"));
 
@@ -124,7 +124,7 @@ public class UserService {
 
         findUser.delete(true);
 
-        DeleteUserResponseDto responseDto = new DeleteUserResponseDto(findUser.getId());
+        DeleteUserResponse responseDto = new DeleteUserResponse(findUser.getId());
 
         return responseDto;
     }

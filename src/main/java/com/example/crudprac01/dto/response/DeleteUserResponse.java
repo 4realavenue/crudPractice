@@ -1,9 +1,9 @@
 package com.example.crudprac01.dto.response;
 
-public class DeleteUserResponseDto {
+public class DeleteUserResponse {
     private Long id;
 
-    public DeleteUserResponseDto(Long id) {
+    public DeleteUserResponse(Long id) {
         this.id = id;
     }
 
