@@ -3,10 +3,7 @@ package com.example.crudprac01.controller;
 import com.example.crudprac01.dto.ApiResponse;
 import com.example.crudprac01.dto.request.CreateUserRequest;
 import com.example.crudprac01.dto.request.UpdateUserRequest;
-import com.example.crudprac01.dto.response.CreateUserResponse;
-import com.example.crudprac01.dto.response.GetAllUserResponse;
-import com.example.crudprac01.dto.response.GetOneUserResponse;
-import com.example.crudprac01.dto.response.UpdateUserResponse;
+import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,12 +49,12 @@ public class UserController {
 
     // 유저 전체 조회
     @GetMapping
-    public ResponseEntity<ApiResponse<List<GetAllUserResponse>>> getAllUserApi() {
-        List<GetAllUserResponse> responseDto = userService.getAllUser();
+    public ResponseEntity<ApiResponse<GetAllUserResponse>> getAllUserApi() {
+        GetAllUserResponse responseDto = userService.getAllUser();
 
-        ApiResponse<List<GetAllUserResponse>> apiResponse = new ApiResponse<>("success", 200, responseDto);
+        ApiResponse<GetAllUserResponse> apiResponse = new ApiResponse<>("success", 200, responseDto);
 
-        ResponseEntity<ApiResponse<List<GetAllUserResponse>>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        ResponseEntity<ApiResponse<GetAllUserResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }
@@ -70,7 +67,7 @@ public class UserController {
             ) {
         UpdateUserResponse responseDto = userService.updateUser(userId, request);
 
-        ApiResponse<UpdateUserResponse> apiResponse = new ApiResponse<>("success", 200, responseDto);
+        ApiResponse<UpdateUserResponse> apiResponse = new ApiResponse<>("updated", 200, responseDto);
 
         ResponseEntity<ApiResponse<UpdateUserResponse>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
@@ -79,12 +76,13 @@ public class UserController {
 
     // 유저 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("userId") Long userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<ApiResponse<DeleteUserResponseDto>> deleteUser(@PathVariable ("userId") Long userId) {
 
-        ApiResponse apiResponse = new ApiResponse<>("delete success", 200, null);
+        DeleteUserResponseDto responseDto = userService.deleteUser(userId);
 
-        ResponseEntity<ApiResponse> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        ApiResponse<DeleteUserResponseDto> apiResponse = new ApiResponse<>("deleted", 200, responseDto);
+
+        ResponseEntity<ApiResponse<DeleteUserResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
         return response;
     }

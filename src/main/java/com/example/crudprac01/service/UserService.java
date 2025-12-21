@@ -2,10 +2,7 @@ package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.request.CreateUserRequest;
 import com.example.crudprac01.dto.request.UpdateUserRequest;
-import com.example.crudprac01.dto.response.CreateUserResponse;
-import com.example.crudprac01.dto.response.GetAllUserResponse;
-import com.example.crudprac01.dto.response.GetOneUserResponse;
-import com.example.crudprac01.dto.response.UpdateUserResponse;
+import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.entity.User;
 import com.example.crudprac01.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -69,20 +66,26 @@ public class UserService {
      * 유저 전체 조회
      */
     @Transactional(readOnly = true)
-    public List<GetAllUserResponse> getAllUser() {
-        List<User> userList = userRepository.findAll();
+    public GetAllUserResponse getAllUser() {
+        List<User> findUserList = userRepository.findByIsDeletedFalse();
 
-        List<GetAllUserResponse> userDtoList = new ArrayList<>();
+        Integer countUser = findUserList.size();
 
-        for (User user : userList) {
-            GetAllUserResponse userDto = new GetAllUserResponse(
+        List<GetAllUserResponse.GetUserListResponse> userListDto = new ArrayList<>();
+
+        for (User user : findUserList) {
+            GetAllUserResponse.GetUserListResponse userDto = new GetAllUserResponse.GetUserListResponse(
+                    user.getId(),
                     user.getName(),
                     user.getEmail()
             );
-            userDtoList.add(userDto);
+
+            userListDto.add(userDto);
         }
 
-        return userDtoList;
+        GetAllUserResponse responseDto = new GetAllUserResponse(countUser, userListDto);
+
+        return responseDto;
     }
 
     /**
@@ -111,12 +114,18 @@ public class UserService {
      * 유저 삭제 (softDelete)
      */
     @Transactional
-    public void deleteUser(Long userId) {
+    public DeleteUserResponseDto deleteUser(Long userId) {
         User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다"));
 
-        if (findUser.getIsDeleted() == false) {
-            findUser.delete(true);
+        if (findUser.getIsDeleted() == true) {
+            throw new IllegalArgumentException("이미 삭제 된 유저 입니다.");
         }
+
+        findUser.delete(true);
+
+        DeleteUserResponseDto responseDto = new DeleteUserResponseDto(findUser.getId());
+
+        return responseDto;
     }
 }
