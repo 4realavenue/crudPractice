@@ -34,14 +34,31 @@ public class Game {
     @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;
 
-    // 매핑 된 games 테이블에 컬럼에 표시 될 이름은 update_at 임을 명시
-    @Column(name = "update_at")
+    // 매핑 된 games 테이블에 컬럼에 표시 될 이름은 created_at 임을 명시
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // 매핑 된 games 테이블에 컬럼에 표시 될 이름은 updated_at 임을 명시
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     // 매핑 된 games 테이블에 컬럼에 표시 될 이름은 is_deleted 임을 명시
     // 기본 값은 false로 설정
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
+
+    // 영속화 되기 전에
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // 수정 되기 전에
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     // Spring이 사용하는 생성자 입니다.
     protected Game() {}
