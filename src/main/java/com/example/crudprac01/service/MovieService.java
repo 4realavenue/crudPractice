@@ -102,7 +102,8 @@ public class MovieService {
         UpdateMovieResponse responseDto = new UpdateMovieResponse(
                 findMovie.getTitle(),
                 findMovie.getDirector(),
-                findMovie.getReleaseDate()
+                findMovie.getReleaseDate(),
+                findMovie.getUpdatedAt()
         );
 
         return responseDto;

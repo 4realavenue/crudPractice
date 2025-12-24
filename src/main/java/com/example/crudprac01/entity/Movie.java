@@ -16,17 +16,38 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column(length = 100, unique = true)
+    @Column(name = "title", length = 100, unique = true)
     private String title;
 
-    @Column(length = 30)
+    @Column(name = "director", length = 30)
     private String director;
 
+    @Column(name = "release_date")
     private LocalDate releaseDate;
 
+    @Column(name = "is_deleted")
     private Boolean isDeleted = false;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 
     // 스프링이 사용하는 생성자 입니다.
     protected Movie() {
@@ -56,6 +77,14 @@ public class Movie {
 
     public Boolean getDeleted() {
         return isDeleted;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public void update(String title, String director, LocalDate releaseDate) {
