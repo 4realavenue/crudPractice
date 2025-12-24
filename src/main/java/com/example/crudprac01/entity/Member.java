@@ -24,6 +24,17 @@ public class Member {
     
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
     
     // spring이 사용하는 생성자
     protected Member() {
