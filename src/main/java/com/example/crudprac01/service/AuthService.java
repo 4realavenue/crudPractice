@@ -1,6 +1,7 @@
 package com.example.crudprac01.service;
 
 import com.example.crudprac01.dto.MemberLoginRequestDto;
+import com.example.crudprac01.dto.response.MemberLoginResponseDto;
 import com.example.crudprac01.entity.Member;
 import com.example.crudprac01.repository.MemberRepository;
 import org.slf4j.Logger;
@@ -14,14 +15,16 @@ public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     // 로그인 처리
-    public void login(MemberLoginRequestDto requestDto) {
+    public MemberLoginResponseDto login(MemberLoginRequestDto requestDto) {
 
         // 데이터 준비
         String email = requestDto.getEmail();
@@ -40,6 +43,16 @@ public class AuthService {
             throw new RuntimeException("잘못된 비밀번호 입니다");
         }
 
+        String jwtToken = jwtService.createJwtToken(
+                foundMember.getId(),
+                foundMember.getEmail(),
+                foundMember.getName()
+        );
 
+        MemberLoginResponseDto responseDto = new MemberLoginResponseDto(jwtToken);
+
+//        log.info("jwtToken : {}", jwtToken);
+
+        return responseDto;
     }
 }

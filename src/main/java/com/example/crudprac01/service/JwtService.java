@@ -21,7 +21,7 @@ public class JwtService {
         Date expirationPeriod = new Date(now.getTime() + 1000 * 60);
 
         String jwtToken = Jwts.builder()
-                .issuer("jwt.")
+                .issuer("jwt.members")
                 .subject(memberId.toString())
                 .issuedAt(now)
                 .expiration(expirationPeriod)
