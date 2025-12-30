@@ -1,9 +1,11 @@
 package com.example.crudprac01.controller;
 
-import com.example.crudprac01.dto.request.MemberCreateRequestDto;
+import com.example.crudprac01.dto.request.MemberRegisterRequestDto;
 import com.example.crudprac01.dto.request.MemberUpdateRequestDto;
 import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.service.MemberService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/members")
 public class MemberController {
 
+    private static final Logger log = LoggerFactory.getLogger(MemberController.class);
     private final MemberService memberService;
 
     public MemberController(MemberService memberService) {
@@ -19,24 +22,24 @@ public class MemberController {
     }
 
 
-    // 1. 멤버 생성
-    @PostMapping
-    public ResponseEntity<ApiResponse<MemberCreateResponseDto>> createMemberApi(
-            @RequestBody MemberCreateRequestDto request
+    // 1. 회원가입 API (멤버 생성)
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<MemberRegisterResponseDto>> registerMemberApi(
+            @RequestBody MemberRegisterRequestDto request
             ) {
 
-        MemberCreateResponseDto responseDto = memberService.createMember(request);
+        MemberRegisterResponseDto responseDto = memberService.registerMember(request);
 
-        ApiResponse<MemberCreateResponseDto> apiResponse = new ApiResponse<>("created", 201, responseDto);
+        ApiResponse<MemberRegisterResponseDto> apiResponse = new ApiResponse<>("created", 201, responseDto);
 
-        ResponseEntity<ApiResponse<MemberCreateResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        ResponseEntity<ApiResponse<MemberRegisterResponseDto>> response = new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
 
         return response;
     }
 
     // 2. 멤버 단건 조회
     @GetMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<MemberGetDetailResponseDto>> getMemeberDetailApi(
+    public ResponseEntity<ApiResponse<MemberGetDetailResponseDto>> getMemberDetailApi(
             @PathVariable ("memberId") Long memberId
     ) {
 

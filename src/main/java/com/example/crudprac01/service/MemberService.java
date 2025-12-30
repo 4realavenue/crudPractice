@@ -1,10 +1,11 @@
 package com.example.crudprac01.service;
 
-import com.example.crudprac01.dto.request.MemberCreateRequestDto;
+import com.example.crudprac01.dto.request.MemberRegisterRequestDto;
 import com.example.crudprac01.dto.request.MemberUpdateRequestDto;
 import com.example.crudprac01.dto.response.*;
 import com.example.crudprac01.entity.Member;
 import com.example.crudprac01.repository.MemberRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,23 +16,49 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
-
-    // 1. 멤버 생성
+    // 1. 회원가입 로직 (멤버 생성)
     @Transactional
-    public MemberCreateResponseDto createMember(MemberCreateRequestDto request) {
+    public MemberRegisterResponseDto registerMember(MemberRegisterRequestDto request) {
+
+        String email = request.getEmail();
+        String password = request.getPassword();
+        String name = request.getName();
+
+        // 이메일 중복 여부
+        Boolean validExistEmail = memberRepository.existsByEmail(email);
+
+        if (validExistEmail == true) {
+            throw new RuntimeException("중복된 이메일 입니다");
+        }
+
+        // 비밀번호 암호화
+        String encodePassword = passwordEncoder.encode(password);
+
         Member member = new Member(
-                request.getName()
+                email,
+                encodePassword,
+                name
         );
 
         Member savedMember = memberRepository.save(member);
 
-        MemberCreateResponseDto responseDto = new MemberCreateResponseDto(
-                savedMember.getId()
+        String jwtToken = jwtService.createJwtToken(
+                savedMember.getId(),
+                savedMember.getEmail(),
+                savedMember.getName()
+        );
+
+        MemberRegisterResponseDto responseDto = new MemberRegisterResponseDto(
+                jwtToken
         );
 
         return responseDto;

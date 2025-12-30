@@ -12,8 +12,14 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "email", length = 200, nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
     
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", length = 20, nullable = false)
     private String name;
     
     @Column(name = "created_at")
@@ -40,7 +46,9 @@ public class Member {
     protected Member() {
     }
 
-    public Member(String name) {
+    public Member(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
         this.name = name;
     }
 
@@ -62,6 +70,14 @@ public class Member {
 
     public Boolean getDeleted() {
         return isDeleted;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     // --------[메서드]---------
